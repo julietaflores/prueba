@@ -1,0 +1,239 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Mapa Service Web</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template -->
+    <link rel="icon" href="~/Content/logoServiceWeb/Logo_Service_Web-01.png" type="image/png" />
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template-->
+
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+        * element that contains the map. */
+        #map {
+            height: 50%;
+            position: absolute;
+            overflow: visible;
+        }
+        /* Optional: Makes the sample page fill the window. */
+
+    </style>
+
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        @RenderPage("~/Content/sidebar.cshtml")
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                @RenderPage("~/Content/navbar.cshtml")
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Content Row -->
+                    <div class="row">
+                        <input id="idpersona" name="idpersona" value="@ViewBag.datoid" style="display:none" />
+                        <input id="ruta_actual1" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual1"]" style="display: none;" />
+                        <input id="webserv" value="@System.Configuration.ConfigurationManager.AppSettings["webservice"]" style="display: none;" />
+                        <input id="ruta_actual" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual"]" style="display: none;" />
+
+
+
+
+                        <div style="display:none" id="solou" class="col-md-12">
+                            <div class="card-body">
+                                <div id="map" style="height: 500px; position: relative;"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <!-- Content Row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <div class="loader"></div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            @RenderPage("~/Content/footer.cshtml")
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
+    <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/js/demo/datatables-demo.js"></script>
+
+
+
+
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+    var idu = @Session["UserId"];
+    var ws = $("#webserv").val();
+    var ruta_actual = $("#ruta_actual").val();
+    var ruta_actual1 = $("#ruta_actual1").val();
+</script>
+
+<script type="text/javascript" src="~/Content/menu1.js"></script>
+
+
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBGXKJonMENu9TW0hSYjIpkDoGYi3Yp5c0&callback=initMap">
+</script>
+
+
+
+<script>
+
+    $(document).ready(function () {
+
+        var dd = $("#idpersona").val();
+        $.ajax({
+            url: ruta_actual1+"/GetPersonaGPS",
+            dataType: "json",
+            data: { id: dd },
+            success: function (data) {
+
+                if (data.length == 1) {
+
+                    $.each(data, function (idx, obj) {
+                        var dry = obj.latitud;
+                        var dry1 = obj.longitud;
+                        var b1 = parseFloat(dry);
+                        var b2 = parseFloat(dry1);
+                        var myLatLng = { lat: b1, lng: b2 };
+                        var imgy1 = 'map';
+                        map = new google.maps.Map(document.getElementById(imgy1), {
+                            center: myLatLng,
+                            zoom: 15
+                        });
+                        marker = new google.maps.Marker({
+                            map: map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP,
+                            position: myLatLng
+                        });
+                        marker.addListener('click', toggleBounce);
+                    });
+                    $('#solou').show(3000);
+
+                } else {
+
+                    var ii1 = 1;
+                    $.each(data, function (idx, obj) {
+                        var dry = obj.latitud;
+                        var dry1 = obj.longitud;
+                        var b1 = parseFloat(dry);
+                        var b2 = parseFloat(dry1);
+                        var myLatLng = { lat: b1, lng: b2 };
+                        var imgy1 = 'tabla' + ii1;
+
+
+
+
+
+
+                        var fila = "<tr> <td>" +
+                            " <div class='col-md-12'>" +
+                            " <div class='card-body'>" +
+                            "<div id=" + "'" + imgy1 + "'" +
+                            " style='height: 500px; position: relative;'>" + imgy1 + "</div>" +
+                            "</div>" +
+                            "</div>" +
+                            "</td> </tr>";
+
+
+
+
+                        var btn = document.createElement("TR");
+                        btn.innerHTML = fila;
+                        document.getElementById("tablaReportes11").appendChild(btn);
+
+
+                        map = new google.maps.Map(document.getElementById(imgy1), {
+                            center: myLatLng,
+                            zoom: 15
+                        });
+                        marker = new google.maps.Marker({
+                            map: map,
+                            draggable: true,
+                            animation: google.maps.Animation.DROP,
+                            position: myLatLng
+                        });
+                        marker.addListener('click', toggleBounce);
+
+
+
+
+
+
+                        ii1++;
+                    });
+                    $('#tablaReportes11').show(3000);
+                }
+
+
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+    });
+
+
+    function toggleBounce() {
+        if (marker.getAnimation() !== null) {
+            marker.setAnimation(null);
+        } else {
+            marker.setAnimation(google.maps.Animation.BOUNCE);
+        }
+    }
+
+</script>

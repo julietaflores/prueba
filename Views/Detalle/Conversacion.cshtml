@@ -1,0 +1,541 @@
+﻿
+@model IEnumerable<plataforma3.Models.Conversacion>
+@{
+    Layout = null;
+}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Reporte Requerimientos</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template -->
+    <link rel="icon" href="~/Content/logoServiceWeb/Logo_Service_Web-01.png" type="image/png" />
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template-->
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.js"></script>
+
+    <style>
+
+        .loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('../Content/img/cargar.gif') 50% 50% no-repeat rgb(249,249,249);
+            opacity: .8;
+        }
+    </style>
+
+
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background: white
+        }
+
+        .chat {
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .card {
+            height: 500px;
+            border-radius: 15px !important;
+            background-color: #93E870
+        }
+
+        .contacts_body {
+            padding: 0.75rem 0 !important;
+            overflow-y: auto;
+            white-space: nowrap;
+        }
+
+        .msg_card_body {
+            overflow-y: auto;
+            background-color: white
+        }
+
+        .card-header1 {
+            margin-bottom: 0;
+            border-bottom: 1px solid #e3e6f0;
+            border-radius: 15px 15px 0 0 !important;
+            border-bottom: 0 !important;
+        }
+
+        .card-footer1 {
+            padding: .75rem 1.25rem;
+            border-top: 1px solid #e3e6f0;
+            border-radius: 0 0 15px 15px !important;
+            border-top: 0 !important;
+        }
+
+        .container {
+            align-content: center;
+        }
+
+        .search {
+            border-radius: 15px 0 0 15px !important;
+            background-color: rgba(0,0,0,0.3) !important;
+            border: 0 !important;
+            color: white !important;
+        }
+
+            .search:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+
+        .type_msg {
+            background-color: rgba(0,0,0,0.3) !important;
+            border: 0 !important;
+            color: white !important;
+            height: 60px !important;
+            overflow-y: auto;
+        }
+
+            .type_msg:focus {
+                box-shadow: none !important;
+                outline: 0px !important;
+            }
+
+        .attach_btn {
+            border-radius: 15px 0 0 15px !important;
+            background-color: rgba(0,0,0,0.3) !important;
+            border: 0 !important;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        .send_btn {
+            border-radius: 0 15px 15px 0 !important;
+            background-color: rgba(0,0,0,0.3) !important;
+            border: 0 !important;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        .search_btn {
+            border-radius: 0 15px 15px 0 !important;
+            background-color: rgba(0,0,0,0.3) !important;
+            border: 0 !important;
+            color: white !important;
+            cursor: pointer;
+        }
+
+        .contacts {
+            list-style: none;
+            padding: 0;
+        }
+
+            .contacts li {
+                width: 100% !important;
+                padding: 5px 10px;
+                margin-bottom: 15px !important;
+            }
+
+        .active {
+            background-color: rgba(0,0,0,0.3);
+        }
+
+        .user_img {
+            height: 70px;
+            width: 70px;
+            border: 1.5px solid #f5f6fa;
+        }
+
+        .user_img_msg {
+            height: 40px;
+            width: 40px;
+            border: 1.5px solid #f5f6fa;
+        }
+
+        .img_cont {
+            position: relative;
+            height: 70px;
+            width: 70px;
+        }
+
+        .img_cont_msg {
+            height: 40px;
+            width: 40px;
+        }
+
+        .online_icon {
+            position: absolute;
+            height: 15px;
+            width: 15px;
+            background-color: #4cd137;
+            border-radius: 50%;
+            bottom: 0.2em;
+            right: 0.4em;
+            border: 1.5px solid white;
+        }
+
+        .offline {
+            background-color: #c23616 !important;
+        }
+
+        .user_info {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: 15px;
+        }
+
+            .user_info span {
+                font-size: 20px;
+                color: white;
+            }
+
+            .user_info p {
+                font-size: 10px;
+                color: rgba(255,255,255,0.6);
+            }
+
+        .video_cam {
+            margin-left: 50px;
+            margin-top: 5px;
+        }
+
+            .video_cam span {
+                color: white;
+                font-size: 20px;
+                cursor: pointer;
+                margin-right: 20px;
+            }
+
+        .msg_cotainer {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-left: 10px;
+            border-radius: 25px;
+            background-color: #82ccdd;
+            padding: 10px;
+            position: relative;
+        }
+
+        .msg_cotainer_send {
+            margin-top: auto;
+            margin-bottom: auto;
+            margin-right: 10px;
+            border-radius: 25px;
+            background-color: #78e08f;
+            padding: 10px;
+            position: relative;
+        }
+
+        .msg_time {
+            position: absolute;
+            left: 0;
+            bottom: -15px;
+            color: rgba(70, 77, 67);
+            font-size: 10px;
+        }
+
+        .msg_time_send {
+            position: absolute;
+            right: 0;
+            bottom: -15px;
+            color: rgba(70, 77, 67);
+            font-size: 10px;
+        }
+
+        .msg_head {
+            position: relative;
+        }
+
+        #action_menu_btn {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .action_menu {
+            z-index: 1;
+            position: absolute;
+            padding: 15px 0;
+            background-color: rgba(0,0,0,0.5);
+            color: white;
+            border-radius: 15px;
+            top: 30px;
+            right: 15px;
+            display: none;
+        }
+
+            .action_menu ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+                .action_menu ul li {
+                    width: 100%;
+                    padding: 10px 15px;
+                    margin-bottom: 5px;
+                }
+
+                    .action_menu ul li i {
+                        padding-right: 10px;
+                    }
+
+                    .action_menu ul li:hover {
+                        cursor: pointer;
+                        background-color: rgba(0,0,0,0.2);
+                    }
+    </style>
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        @RenderPage("~/Content/sidebar.cshtml")
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                @RenderPage("~/Content/navbar.cshtml")
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <input id="webserv" value="@System.Configuration.ConfigurationManager.AppSettings["webservice"]" style="display: none;" />
+                    <input id="ruta_actual" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual"]" style="display: none;" />
+                    <div class="row">
+
+
+
+
+
+                        <div class="container-fluid h-100">
+                            <div class="row justify-content-center h-100">
+
+                                <div class="col-md-10 col-xl-10 chat">
+                                    <div class="card">
+                                        <div class="card-header1 msg_head">
+                                            <div class="d-flex bd-highlight">
+                                                <div class="img_cont">
+                                                    <img src="~/Content/logoServiceWeb/logo_Service_web-02.svg" class="rounded-circle user_img">
+                                                    <span class="online_icon"></span>
+                                                </div>
+                                                <div class="user_info">
+                                                    <span>Chat Service Web</span>
+
+                                                    @{
+                                                        int count = 0;
+                                                        foreach (var item in Model)
+                                                        {
+                                                            count++;
+                                                        }
+                                                    }
+                                                    <p> @count  Mensajes</p>
+
+                                                </div>
+
+                                            </div>
+                                            <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                                            <div class="action_menu">
+                                                <ul>
+                                                    <li>
+                                                        <a id="cerrar" name="cerrar" onclick="cerrar()">	<i class="fas fa-sign-out-alt"></i>  Salir    </a>
+
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="card-body msg_card_body">
+                                            @{
+                                                int counter = 1;
+                                                var ff = 1.5E6m;
+                                                foreach (var item in Model)
+                                                {
+
+                                                    var vv = item.ConversacionPersonaIdEmisor;
+                                                    var rr = vv;
+                                                    if (counter == 1)
+                                                    {
+
+                                                        var dddd = item.foto1;
+
+                                                        if (dddd == "")
+                                                        {
+                                                            dddd = "http://serviceweb.bo/ServicioWeb/Resources/MediaRequest/perfil.png";
+                                                        }
+                                                        var fh = item.ConversacionFechaHora;
+                                                        <div class="d-flex justify-content-start mb-4">
+                                                            <div class="img_cont_msg">
+                                                              
+                                                                <img src="@dddd" class="rounded-circle user_img_msg">
+                                                            </div>
+                                                            <div class="msg_cotainer">
+                                                                @Html.DisplayFor(modelItem => item.ConversacionContenido)
+                                                                <span class="msg_time"> @fh </span>
+                                                            </div>
+                                                        </div>
+                                                        counter = 2;
+                                                        ff = item.ConversacionPersonaIdEmisor;
+                                                    }
+                                                    else
+                                                    {
+                                                        if (ff == vv)
+                                                        {
+                                                           
+                                                            var dddd1 = item.foto1;
+                                                            if (dddd1 == "")
+                                                            {
+                                                                dddd1 = "http://serviceweb.bo/ServicioWeb/Resources/MediaRequest/perfil.png";
+                                                            }
+
+
+
+                                                            var fh = item.ConversacionFechaHora;
+                                                            <div class="d-flex justify-content-start mb-4">
+                                                                <div class="img_cont_msg">
+                                                                    <img src="@dddd1" class="rounded-circle user_img_msg">
+                                                                </div>
+                                                                <div class="msg_cotainer">
+                                                                    @Html.DisplayFor(modelItem => item.ConversacionContenido)
+                                                                    <span class="msg_time">@fh</span>
+                                                                </div>
+                                                            </div>
+
+                                                            ff = item.ConversacionPersonaIdEmisor;
+                                                        }
+                                                        else
+                                                        {
+
+                                                            var dddd2 = item.foto1;
+                                                          
+                                                            if (dddd2 == "")
+                                                            {
+                                                                dddd2 = "http://serviceweb.bo/ServicioWeb/Resources/MediaRequest/perfil.png";
+                                                            }
+                                                            var fh = item.ConversacionFechaHora;
+                                                            <div class="d-flex justify-content-end mb-4">
+                                                                <div class="msg_cotainer_send">
+                                                                    @Html.DisplayFor(modelItem => item.ConversacionContenido)
+                                                                    <span class="msg_time_send">@fh</span>
+                                                                </div>
+                                                                <div class="img_cont_msg">
+                                                                    <img src="@dddd2" class="rounded-circle user_img_msg">
+                                                                </div>
+                                                            </div>
+                                                            ff = item.ConversacionPersonaIdReceptor;
+                                                        }
+
+
+                                                    }
+
+                                                }
+                                            }
+
+                                        </div>
+
+                                        <div class="card-footer1">
+                                            <div class="input-group">
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
+                    </div>
+
+                    <!-- Content Row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <div class="loader"></div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            @RenderPage("~/Content/footer.cshtml")
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
+    <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
+<script type="text/javascript">
+    var idu = @Session["UserId"];
+    var ws = $("#webserv").val();
+    var ruta_actual = $("#ruta_actual").val();
+</script>
+
+
+<script type="text/javascript" src="~/Content/menu1.js"></script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".loader").fadeOut("slow");
+    });
+</script>
+
+<script>
+
+
+    function cerrar() {
+        window.close();
+    }
+    $(document).ready(function () {
+        $('#action_menu_btn').click(function () {
+            $('.action_menu').toggle();
+        });
+    });
+</script>

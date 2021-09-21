@@ -1,0 +1,711 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Reporte Requerimientos</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template -->
+    <link rel="icon" href="~/Content/logoServiceWeb/Logo_Service_Web-01.png" type="image/png" />
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template-->
+    <style>
+
+        input[type="text"] {
+            background-color: transparent;
+            border: 0px;
+            outline: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            cursor: default;
+            color: currentColor;
+            text-align: center;
+        }
+
+        #dataTable1 th {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        #dataTable1 td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+
+        .loader {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('../Content/img/cargar.gif') 50% 50% no-repeat rgb(249,249,249);
+            opacity: .8;
+        }
+
+        .colord {
+            border: 1px solid currentColor;
+        }
+
+
+        .tam1 {
+            width: 8%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .tam2 {
+            width: 41%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .tam3 {
+            width: 18%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .tam4 {
+            width: 15%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .tam5 {
+            width: 18%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .p_tabla {
+            margin: auto;
+            font-size: 12px;
+        }
+
+
+
+        .tam11 {
+            width: 10%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .tam22 {
+            width: 90%;
+            height: auto;
+            text-align: center;
+            padding: 5px;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        @RenderPage("~/Content/sidebar.cshtml")
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                @RenderPage("~/Content/navbar.cshtml")
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <input id="ruta_actual1" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual1"]" style="display: none;" />
+                    <input id="webserv" value="@System.Configuration.ConfigurationManager.AppSettings["webservice"]" style="display: none;" />
+                    <input id="ruta_actual" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual"]" style="display: none;" />
+                    <div class="row">
+
+                        <!-- Page Heading -->
+                        <h1 class="h3 mb-2 text-gray-800" style="margin-left: 10px;">Tabla de Requerimientos de Servicio</h1>
+
+
+
+                        <div class="card shadow mb-4" style="margin-left: 10px;">
+
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered" id="example" name="example" width="100%" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th class="pais">
+                                                    Codigo1
+                                                </th>
+
+                                                <th>
+                                                    Código
+                                                </th>
+
+                                                <th>
+                                                    Nombres
+                                                </th>
+                                                <th>
+                                                    Apellidos
+                                                </th>
+                                                <th>
+                                                    Telefono
+                                                </th>
+                                                <th>
+                                                    Correo
+                                                </th>
+
+
+                                                <th>
+                                                    Fecha y Hora Req.
+                                                </th>
+
+                                                <th>
+                                                    Fecha y Hora Deseada
+                                                </th>
+
+                                                <th>
+                                                    Ubicacion
+                                                </th>
+                                                <th>
+                                                    Estado
+                                                </th>
+                                                <th>
+                                                    Descripción del Req.
+                                                </th>
+
+                                                <th>
+                                                    Opción de Solicitud
+                                                </th>
+
+                                                <th>
+                                                    Opción de Pedido
+                                                </th>
+
+                                                <th>
+                                                    Foto Solicitado 1
+                                                </th>
+
+                                                <th>
+                                                    Foto Solicitado 2
+                                                </th>
+
+                                                <th>
+                                                    Foto Solicitado 3
+                                                </th>
+
+                                                <th>
+                                                    Servicio
+                                                </th>
+
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tay">
+                                        </tbody>
+
+                                    </table>
+
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    </div>
+
+                    <!-- Content Row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <div class="loader"></div>
+            <!-- End of Main Content -->
+            <!-- Footer -->
+            @RenderPage("~/Content/footer.cshtml")
+            <!-- End of Footer -->
+        </div>
+        <!-- End of Content Wrapper -->
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+
+
+    <div id="ModalAddres" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" style="opacity: 1;">
+        <div class="modal-dialog" role="document" style="padding-top:100px">
+            <div class="modal-content">
+
+                <div class="modal-body">
+                    <div class="text-center mt-2 mb-4">
+
+                        <a class="text-success">
+                            <span>
+                                <img class="mr-2" src="../Content/carpeta_login/images/Provsw.png"
+                                     alt="" height="50"><img src="../Content/logosSW/text.png" alt=""
+                                                             height="50">
+                            </span>
+                        </a>
+
+                        <button type="button" class="close" data-dismiss="modal">
+                            ×
+                        </button>
+                    </div>
+                    <div class="text-center mt-0 mb-0">
+                        <p class="req_direccion" for="Usuari">Lista de SubServicios</p>
+                    </div>
+
+
+                    <div class="container-login1001">
+                        <div class="wrap-login100 p-l-5 p-r-5 p-t-10 p-b-10">
+                            <div id="llenar_t"> </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
+    <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Content/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
+
+
+<form id="form_search" method="post" action="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual1"]/mapa" target="_blank" style="display: none;">
+    <input name="search_text_form" id="search_text_form">
+</form>
+
+
+<script type="text/javascript">
+    var idu = @Session["UserId"];
+    var ws = $("#webserv").val();
+    var ruta_actual = $("#ruta_actual").val();
+    var ruta_actual1 = $("#ruta_actual1").val();
+</script>
+
+<script type="text/javascript" src="~/Content/menu1.js"></script>
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".loader").fadeOut("slow");
+
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            type: "get",
+            url: ws + "/api/Lista_Req_PO_terinado",
+            success: function (data) {
+
+                console.log("holaa: " + data.valor);
+                var dat1 = JSON.stringify(data.valor);
+                console.log("lista_admin: " + dat1);
+
+                var dat2 = JSON.parse(dat1);
+                console.log("lista_admin1: " + dat2);
+
+                $('#example').dataTable().fnDestroy();
+
+                var cony = '';
+                $.each(dat2, function (idx, obj) {
+
+                    var req_encriptado = parseInt(obj.requiereservicio, 16);
+
+                    var ubicacion = '<a onclick="enviar_ubicacion(' + obj.personaid + ',' + obj.personadireccionid+')" class="btn btn-link">' +
+                        '<i class="fa fa-map-marker" style = "font-size:24px;color:lawngreen" ></i></a>';
+
+                    var foto1;
+                    var foto2;
+                    var foto3;
+
+
+                    if (obj.foto1 == "") {
+                        foto1 = "Sin Foto";
+                    } else {
+                        foto1 = '<a type="button" target="_blank" href=' + "https://webservice.serviceweb.bo/Resources/MediaRequest/" + obj.foto1 + ' class="btn btn-link">' +
+                            '<i class="fa fa-picture-o" style = "font-size:24px;color:lawngreen" ></i></a>';
+                    }
+
+
+                    if (obj.foto2 == "") {
+                        foto2 = "Sin Foto";
+                    } else {
+
+                        foto2 = '<a type="button" target="_blank" href=' + "https://webservice.serviceweb.bo/Resources/MediaRequest/" + obj.foto2 + ' class="btn btn-link">' +
+                            '<i class="fa fa-picture-o" style = "font-size:24px;color:lawngreen" ></i></a>';
+                    }
+
+
+                    if (obj.foto3 == "") {
+                        foto3 = "Sin Foto";
+                    } else {
+
+
+                        foto3 = '<a type="button" target="_blank" href=' + "https://webservice.serviceweb.bo/Resources/MediaRequest/" + obj.foto3 + ' class="btn btn-link">' +
+                            '<i class="fa fa-picture-o" style = "font-size:24px;color:lawngreen" ></i></a>';
+                    }
+
+
+
+                    var detalle = "";
+
+                    if ((obj.requiereserviciootros == false) & (obj.serviciodetalletipo == false)) {
+
+
+                        detalle = '<a onclick="ver_seleccion(' + req_encriptado + ')" class="btn btn-link">' +
+                            '<i class="fa fa-hand-pointer-o" style = "font-size:24px;color:lawngreen" ></i></a>';
+
+                    } else {
+
+                        if ((obj.requiereserviciootros == true) ) {
+                            detalle = "Opcion de Otros";
+
+                        } else {
+                            if ((obj.requiereserviciootros == false) & (obj.serviciodetalletipo == true)) {
+
+                                detalle = "Opcion de Rango";
+                            }
+                        }
+                    }
+                    var fila = "<tr> <td>" + obj.fechan + "</td>   <td> <a href=" + ruta_actual1 + "/Details/" + obj.requiereservicio + ">" + obj.requiereservicio + "</a> </td>  <td>" + obj.nombre + "</td> <td>" + obj.apellido + "</td>  <td>" + obj.telefono + "</td> " +
+                        "<td>" + obj.correo + "</td> <td> " + obj.fhrequerida + "</td> <td>" + obj.fhdeseada + "</td>  <td>" + ubicacion + "</td>  <td>" + obj.estado + "</td>" +
+                        "<td>" + obj.decripcion + "</td> <td>" + detalle + "</td> <td>" + obj.opcionpedido + "</td> <td>" + foto1 + "</td> <td>" + foto2 + "</td> <td>" + foto3 + "</td> <td>" + obj.servicio + "</td> " +
+
+                        "</tr > ";
+                    var btn = document.createElement("TR");
+                    btn.innerHTML = fila;
+                    cony += fila;
+                });
+                document.getElementById('tay').innerHTML = cony;
+
+                $('#example').DataTable({
+
+                    "columnDefs": [
+
+                        {
+                            "targets": [0],
+                            "visible": false
+                        }
+                    ], "order": [[0, "desc"]]
+                });
+                $('#secondLottie').css({ 'display': 'none' });
+
+            }
+        });
+
+
+    });
+
+
+
+
+
+
+
+    function enviar_ubicacion(personaid, personadireccionid) {
+
+        $.ajax({
+            url: ruta_actual1 + "/geolocalizacion",
+            dataType: "json",
+            data: { personaid: personaid, personadireccionid: personadireccionid },
+            success: function (data) {
+                if (data !="100") {
+                    $('#search_text_form').val(data);
+                    $('#form_search').submit();
+                } else {
+                    alert("Sin Ubicación ");
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+
+
+    }
+
+
+
+    function ver_seleccion(dato) {
+        dato = dato.toString(16);
+        dato = dato.toUpperCase();
+     $('#ModalAddres').hide();
+
+
+        $("#llenar_t").empty();
+        $.ajax({
+
+            url: ruta_actual1 + '/detallereq',
+            dataType: "json",
+            data: { reqid: dato },
+            success: function (data) {
+                if ($.isEmptyObject(data)) {
+
+                    $.ajax({
+                        url: ruta_actual1 + '/detallereq1',
+                        dataType: "json",
+                        data: { reqid: dato },
+                        success: function (data) {
+
+                            var pri = '<li style="list-style:none">' +
+                                '<div class="row tamat1" style="margin:auto;">' +
+                                '<div  class="colord tam11">' +
+                                '<p class="p_tabla">Item</p>' +
+                                '</div>' +
+                                '<div  class="colord tam22">' +
+                                '<p class="p_tabla">Descripción</p>' +
+                                '</div>' +
+
+                                '</div>' +
+                                '</li>';
+
+                            var llenar1 = "";
+                            var i = 1;
+
+                            $.each(data, function (idx, obj) {
+                                var d1 = obj.serviciodetalleid;
+                                var d2 = obj.descripcion;
+                                var d3 = obj.costo_inicial;
+                                var d4 = obj.costo_final;
+
+
+                                llenar1 = '<li style="list-style:none">' +
+                                    '<div class="row tamat1" style="margin:auto;">' +
+                                    '<div  class="colord tam11">' +
+                                    '<p class="p_tabla">' + d1 + '</p>' +
+                                    '</div>' +
+                                    '<div  class="colord tam22">' +
+                                    '<p class="p_tabla">' + d2 + ' ' + d3 + ' BOB' + ' ' + 'a' + ' ' + d4 + ' BOB' + '</p>' +
+                                    '</div>' +
+
+
+                                    '</div>' +
+                                    '</li>';
+
+
+                                i++;
+
+
+
+                            });
+
+
+
+
+                            var ft = pri + llenar1;
+
+                            $("#llenar_t").append(ft);
+                            $('#ModalAddres').modal();
+
+
+
+
+
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Error");
+                        }
+                    });
+
+
+
+
+
+                } else {
+
+
+
+
+                    var pri = '<li style="list-style:none">' +
+                        '<div class="row tamat1" style="margin:auto;">' +
+                        '<div  class="colord tam1">' +
+                        '<p class="p_tabla">Item</p>' +
+                        '</div>' +
+                        '<div  class="colord tam2">' +
+                        '<p class="p_tabla">Nombre</p>' +
+                        '</div>' +
+                        '<div  class="colord tam3">' +
+                        '<p class="p_tabla">Precio Unitario BOB</p>' +
+                        '</div>' +
+                        '<div  class="colord tam4">' +
+                        '<p  class="p_tabla">Cantidad</p>' +
+                        '</div>' +
+                        '<div  class="colord tam5">' +
+                        '<p  class="p_tabla">Costo Total BOB</p>' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+
+                    var llenar1 = "";
+                    var i = 1;
+
+
+                    var toy = 0;
+
+                    $.each(data, function (idx, obj) {
+                        var d1 = obj.precio;
+                        var d2 = obj.cantidad;
+
+                        var fg = parseInt(d1) * parseInt(d2);
+
+                        var llenar56 = '<li style="list-style:none">' +
+                            '<div class="row tamat1" style="margin:auto;">' +
+                            '<div  class="colord tam1">' +
+                            '<p class="p_tabla">' + i + '</p>' +
+                            '</div>' +
+                            '<div  class="colord tam2">' +
+                            '<p class="p_tabla">' + obj.nombre + '</p>' +
+                            '</div>' +
+                            '<div  class="colord tam3">' +
+                            '<p class="p_tabla">' + obj.precio + '</p>' +
+                            '</div>' +
+                            '<div  class="colord tam4">' +
+                            '<p  class="p_tabla">' + obj.cantidad + '</p>' +
+                            '</div>' +
+                            '<div  class="colord tam5">' +
+                            '<p  class="p_tabla">' + fg + '</p>' +
+                            '</div>' +
+                            '</div>' +
+                            '</li>';
+
+                        llenar1 = llenar1 + llenar56;
+
+                        toy = parseInt(fg) + parseInt(toy);
+                        i++;
+
+
+
+                    });
+
+
+
+                    var segui = 5;
+
+                    var totalk = parseInt(toy) + parseInt(segui);
+
+
+                    var seguro = '<li style="list-style:none">' +
+                        '<div class="row tamat1" style="margin:auto">' +
+                        ' <div  class=" tam1">' +
+                        '<p class="p_tabla"> </p>' +
+                        '</div>' +
+                        '<div  class=" tam2">' +
+                        '<p class="p_tabla"></p>' +
+                        '</div>' +
+                        '<div  class=" tam3">' +
+                        '<p class="p_tabla"> </p>' +
+                        '</div>' +
+                        '<div  class="colord tam4">' +
+                        '<p class="p_tabla">Seguro BOB</p>' +
+                        '</div>' +
+                        '<div  class="colord tam5">' +
+                        ' <p class="p_tabla"  id="seguroo" > </p> ' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+
+
+                    var total = '<li style="list-style:none">' +
+                        '<div class="row tamat1" style="margin:auto">' +
+                        '<div  class=" tam1">' +
+                        '<p class="p_tabla"> </p>' +
+                        '</div>' +
+                        '<div  class=" tam2">' +
+                        '<p class="p_tabla"></p>' +
+                        '</div>' +
+                        '<div class="tam3">' +
+                        '<p class="p_tabla"> </p>' +
+                        '</div>' +
+                        '<div  class="colord tam4">' +
+                        '<p class="p_tabla">Total BOB</p>' +
+                        '</div>' +
+                        '<div  class="colord tam5">' +
+                        '<p id="totall" class="p_tabla" ></p> ' +
+                        '</div>' +
+                        '</div>' +
+                        '</li>';
+
+
+
+                    var ft = pri + llenar1 + seguro + total;
+
+                    $("#llenar_t").append(ft);
+                    $("#totall").append(totalk);
+                    $("#seguroo").text(5);
+
+                    $('#ModalAddres').modal();
+                }
+
+
+
+
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+
+
+
+
+    }
+
+
+
+
+
+
+
+
+
+
+</script>

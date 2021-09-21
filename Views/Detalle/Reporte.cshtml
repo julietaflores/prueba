@@ -1,0 +1,564 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Reporte</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template -->
+    <link rel="icon" href="~/Content/logoServiceWeb/Logo_Service_Web-01.png" type="image/png" />
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <!-- Custom styles for this template -->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/Content/tiempo/css/datepicker.css">
+
+    <link rel="stylesheet" href="~/Content/alertifyjssw/css/alertify.css">
+    <link rel="stylesheet" href="~/Content/alertifyjssw/css/themes/semantic.css">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="~/Content/fechas/jquery.datetimepicker.css" />
+    <style>
+
+        .tm_carrusel2_buscar_servicio_req {
+            width: 14%;
+            margin: 0;
+            border: 1px solid #000;
+            font-size: 15px;
+        }
+
+        .tm_carrusel2_buscar_servicio_title_req {
+            width: 14%;
+            margin: 0;
+            border: 1px solid #000;
+            color: black;
+            font-size: 18px;
+        }
+
+        .tm_carrusel2_buscar_servicio {
+            width: 11%;
+            margin: 0;
+            border: 1px solid #000;
+            font-size: 15px;
+        }
+       
+        .tm_carrusel2_buscar_servicio_title {
+            width: 11%;
+            margin: 0;
+            border: 1px solid #000;
+            color: black;
+            font-size: 18px;
+        }
+
+
+        .loader {
+            display: none;
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('../Content/img/cargar.gif') 50% 50% no-repeat rgb(249,249,249);
+            opacity: .8;
+        }
+
+
+        #row_sb {
+            text-align: center;
+            margin: auto;
+            padding: 5px;
+            background-color: ghostwhite;
+        }
+
+        #lista_deudass {
+            overflow: auto;
+        }
+        #lista_reque {
+            overflow: auto;
+        }
+
+
+        #title1 {
+            font-size: 25px;
+            color: black;
+        }
+
+        #title2 {
+            font-size: 25px;
+            color: black;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        @RenderPage("~/Content/sidebar.cshtml")
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                @RenderPage("~/Content/navbar.cshtml")
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <input id="webserv" value="@System.Configuration.ConfigurationManager.AppSettings["webservice"]" style="display: none;" />
+                    <input id="ruta_actual" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual"]" style="display: none;" />
+                    <div class="row">
+
+
+                        <div class="card shadow mb-4">
+
+                            <div class="card-body">
+
+                                <div class="row" style="margin:auto">
+                                    <div style="text-align:center;width: 100%; padding:15px">
+                                        <h5 id="title1">LISTA DE DEUDAS</h5>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin:auto">
+                                    <div style="width: 100%; padding:10px">
+                                        <div style="width:100%;margin:auto;text-align:left">
+
+                                            <button class="btn btn-success dropdown-toggle" type="button" id="lista_ciudad11" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            </button>
+                                            <div class="dropdown-menu animated--fade-in" id="li_ciudad1" aria-labelledby="dropdownMenuButton">
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                                <div class="row">
+
+                                    <div style="text-align:center;width: 100%; padding:10px">
+                                        <div style="width:100%;margin:auto;text-align:center">
+                                            <div id="lista_deudass"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="card shadow mb-4">
+                            <div class="card-body">
+
+                                <div class="row" style="margin:auto">
+                                    <div style="text-align:center;width: 100%; padding:15px">
+                                        <h5 id="title2">LISTA DE REQUERIMIENTOS POR FECHAS</h5>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row" style="margin:auto">
+                                    <div style="width: 100%;">
+                                        <div style="width:100%;margin:auto;text-align:center;display:flex;padding:5px">
+
+                                            <div style="margin:auto;width:25%;padding:10px;text-align:initial">
+
+                                                <button class="btn btn-success dropdown-toggle" type="button" id="lista_ciudad22" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                </button>
+                                                <div class="dropdown-menu animated--fade-in" id="li_ciudad2" aria-labelledby="dropdownMenuButton">
+                                                </div>
+
+
+                                            </div>
+
+                                            <div style="margin:auto;width:25%;padding:10px;text-align:end">
+                                                <span class="label-input100">Fecha Inicio</span>
+                                                <input type="text" id="date1" /><br><br>
+
+                                            </div>
+
+                                            <div style="margin: auto; width: 25%; padding: 10px; text-align: initial">
+                                                <span class="label-input100">Fecha Fin</span>
+
+                                                <input type="text" id="date2" /><br><br>
+
+                                            </div>
+
+                                            <div style="margin:auto;width:25%;padding:10px;text-align:end">
+                                                
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row" style="margin:auto">
+
+                                    <div style="text-align:center;width: 100%; padding:10px">
+                                        <div style="width:100%;margin:auto;text-align:center">
+                                            <div id="lista_reque"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
+
+
+                </div>
+
+            </div>
+            <div class="loader"></div>
+
+            @RenderPage("~/Content/footer.cshtml")
+
+        </div>
+
+    </div>
+
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="~/Content/js/sb-admin-2.min.js"></script>
+
+    <script src="~/Scripts/jquery-1.12.1.min.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script src="~/Content/alertifyjssw/alertify.min.js"></script>
+
+
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.13/css/gijgo.min.css" rel="stylesheet" type="text/css" />
+
+    <script src="~/Content/tiempo/js/datepicker.js"></script>
+
+
+    <script src="~/Content/fechas/jquery.datetimepicker.full.js"></script>
+
+</body>
+
+</html>
+
+
+
+
+<script type="text/javascript">
+    var idu = @Session["UserId"];
+    var ws = $("#webserv").val();
+    var ruta_actual = $("#ruta_actual").val();
+    var idpersonan = 0;
+    var id_idu = 0;
+    var nombre_del_usuario = "";
+    var correor = "";
+    var telefn = "";
+    var dni = "";
+    var ciudad_aux = "";
+    var valop0 = "";
+    var valop1 = "";
+    var valop2 = "";
+</script>
+
+<script type="text/javascript" src="~/Content/menu1.js"></script>
+
+
+
+<script>
+
+
+    $.datetimepicker.setLocale('es');
+
+    $('#date1').datetimepicker({
+        timepicker: false,
+        format: 'd/m/Y',
+        formatDate: 'Y/m/d'
+    });
+
+    $('#date2').datetimepicker({
+        timepicker: false,
+        format: 'd/m/Y',
+        formatDate: 'Y/m/d'
+    });
+
+   $(document).ready(function () {
+       $('.loader').css({ 'display': 'block' });
+       $("#li_ciudad1").empty();
+       $("#li_ciudad2").empty();
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            type: "get",
+            url: ws + "/api/Lista_ciudad?lang=es",
+            success: function (data) {
+                var dat1 = JSON.stringify(data.valor);
+                var dat2 = JSON.parse(dat1);
+                if (dat2.length > 0) {
+                    var lista = "";
+                    dat2.map(lss => {
+                        var cdcd = "'" + lss.ciudadNombre+"'";
+                        
+                        lista += '<a class="dropdown-item" onclick="ejecutar_lista_deudas(' + lss.ciudadid + ','+cdcd+')" >' + lss.ciudadNombre + '</a>';
+
+                       
+                    });
+                    $("#li_ciudad1").append(lista);
+                    var uno = document.getElementById('lista_ciudad11');
+                    uno.innerHTML = "Lista de Ciudades";
+                  
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+       $.ajax({
+           contentType: 'application/json; charset=utf-8',
+           dataType: "json",
+           type: "get",
+           url: ws + "/api/Lista_ciudad?lang=es",
+           success: function (data) {
+               var dat1 = JSON.stringify(data.valor);
+               var dat2 = JSON.parse(dat1);
+               if (dat2.length > 0) {
+                   var lista = "";
+                   dat2.map(lss => {
+                       var cdcd = "'" + lss.ciudadNombre + "'";
+
+                       lista += '<a class="dropdown-item" onclick="ejecutar_lista_requerimientos(' + lss.ciudadid + ',' + cdcd + ')" >' + lss.ciudadNombre + '</a>';
+
+
+                   });
+                   $("#li_ciudad2").append(lista);
+                   var uno = document.getElementById('lista_ciudad22');
+                   uno.innerHTML = "Lista de Ciudades";
+                   $(".loader").fadeOut("slow");
+               }
+           },
+           error: function (xhr, status, error) {
+               alert("Error");
+           }
+       });
+
+    });
+   // 2021 - 06 - 01 00: 00: 00
+
+
+    function devolverbienf_afuera(dato) {
+        var total = dato.length;
+        var ty = 0;
+        var datoss = "";
+        var datoss1 = "";
+        while (ty < total) {
+            var caracter = dato.charAt(ty);
+            if (caracter == "/") {
+                datoss1 = "-" + datoss + datoss1;
+                datoss = "";
+            } else {
+                datoss += caracter;
+            }
+            ty++;
+        }
+        valop1 = datoss + datoss1 + " 00:00:00";
+        
+    }
+    function devolverbienf_afuera1(dato) {
+        var total = dato.length;
+        var ty = 0;
+        var datoss = "";
+        var datoss1 = "";
+        while (ty < total) {
+            var caracter = dato.charAt(ty);
+            if (caracter == "/") {
+                datoss1 = "-" + datoss + datoss1;
+                datoss = "";
+            } else {
+                datoss += caracter;
+            }
+            ty++;
+        }
+        valop2 = datoss + datoss1 + " 23:59:59";
+
+    }
+   
+
+    function ejecutar_lista_requerimientos(dato, nom) {
+
+
+
+        if ($("#date1").val() == "") {
+            showToast1('error', 'toast-top-right', 'Falta Información'); 
+        } else {
+            if ($("#date2").val() == "") {
+                showToast1('error', 'toast-top-right', 'Falta Información'); 
+            } else {
+                showToast1('success', 'toast-top-right', 'Procesando la Información'); 
+                var fecha1 = $("#date1").val();
+                var fecha2 = $("#date2").val();
+
+
+                devolverbienf_afuera(fecha1);
+                devolverbienf_afuera1(fecha2);
+
+               $('.loader').css({ 'display': 'block' });
+                var url = ws + "/api/Lista_Req_1234?fechaini=" + valop1 + "&fechafin=" + valop2 + "&ciudadid=" + dato;
+
+                $.ajax({
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: "json",
+                    type: "get",
+                    url: url,
+                    success: function (data) {
+                        var dat1 = JSON.stringify(data.valor);
+                        var dat2 = JSON.parse(dat1);
+                        if (dat2.length > 0) {
+                            $("#lista_reque").empty();
+
+                            $("#title2").empty();
+
+                            $("#title2").append("Lista de Requerimientos en " + nom);
+
+                            var lista = "";
+                            dat2.map(lss => {
+                                lista += '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.requiereservicioid + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.nombre + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.apellido + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.fhrequerida + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.fhdeseada + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.servicio_nombre + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_req">' + '<p>' + lss.estadoreqservNombre + '</p>' + '</div>' ;
+                            });
+                            var lista_title = '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'REQ.' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Nombre' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Apellido' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Fecha requerida' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Fecha Deseada' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Servicio' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title_req">' + '<p>' + 'Estado' + '</p>' + '</div>' ;
+                            $("#lista_reque").append('<div class="row" id="row_sb">' + lista_title + lista + '</div>');
+
+
+                            $(".loader").fadeOut("slow");
+                            $("#lista_reque").css({ 'height': '500px' });
+
+
+
+
+                        } else {
+
+      
+                            showToast1('success', 'toast-top-right', 'Sin Requerimientos en la Ciudad de ' + nom);
+                            $(".loader").fadeOut("slow");
+
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Error");
+                    }
+                });
+
+
+            }
+        }
+
+       
+     
+
+
+
+
+
+
+
+
+      
+    }
+
+
+    function ejecutar_lista_deudas(dato, nom) {
+        $('.loader').css({ 'display': 'block' });
+        $.ajax({
+            contentType: 'application/json; charset=utf-8',
+            dataType: "json",
+            type: "get",
+            url: ws + "/api/Lista_deudas?ciudadid="+dato,
+            success: function (data) {
+                var dat1 = JSON.stringify(data.valor);
+                var dat2 = JSON.parse(dat1);
+                if (dat2.length > 0) {
+                    $("#lista_deudass").empty();
+
+                    $("#title1").empty();
+
+                    $("#title1").append("Lista de deudas en " + nom);
+
+                    var lista = "";
+                    dat2.map(lss => {
+                        lista += '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.requiereservicioid + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.servasigid + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.deuda + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.personanombres + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.personaapellidos + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.personadni + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.personatelefono + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.servasigfhinicio + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio">' + '<p>' + lss.servasigfhfin + '</p>' + '</div>';
+                    });
+                    var lista_title = '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'REQ.' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Codigo Pago Express' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Deuda' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Nombre' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Apellidos' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'DNI' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Teléfono' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Fecha Inicio Servicio' + '</p>' + '</div>' + '<div class="tm_carrusel2_buscar_servicio_title">' + '<p>' + 'Fecha Fin Servicio' + '</p>' + '</div>';
+                    $("#lista_deudass").append('<div class="row" id="row_sb">' + lista_title + lista + '</div>');
+
+
+                    $(".loader").fadeOut("slow");
+                    $("#lista_deudass").css({ 'height': '550px' });
+
+
+
+
+                } else {
+                    showToast1('success', 'toast-top-right', 'Sin Deudas en la Ciudad de '+ nom); 
+                    $(".loader").fadeOut("slow");
+
+                }
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+
+
+    }
+
+
+
+    function showToast1(type, css, mensaje) {
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": true,
+            "positionClass": css,
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "5000",
+            "hideDuration": "5000",
+            "timeOut": "5000",
+            "extendedTimeOut": "3000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+        toastr[type](mensaje, 'Service Web');
+    }
+</script>
+

@@ -1,0 +1,811 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Service Web</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Custom fonts for this template -->
+    <link rel="icon" href="~/Content/logoServiceWeb/Logo_Service_Web-01.png" type="image/png" />
+    <link href="~/Content/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="~/Content/css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="~/Content/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom styles for this template-->
+    <style>
+
+
+        input[type="text"] {
+            background-color: transparent;
+            border: 0px;
+            outline: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            cursor: default;
+            color: currentColor;
+        }
+
+        .loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url('../Content/img/cargar.gif') 50% 50% no-repeat rgb(249,249,249);
+            opacity: .8;
+        }
+
+
+        #form {
+            width: 250px;
+            margin: 0 auto;
+            height: 50px;
+        }
+
+            #form p {
+                text-align: center;
+            }
+
+            #form label {
+                font-size: 20px;
+            }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+        label {
+            color: grey;
+        }
+
+        .clasificacion {
+            direction: rtl;
+            unicode-bidi: bidi-override;
+        }
+
+        label:hover,
+        label:hover ~ label {
+            color: lawngreen;
+        }
+
+        input[type="radio"]:checked ~ label {
+            color: lawngreen;
+        }
+    </style>
+
+</head>
+
+<body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+        @RenderPage("~/Content/sidebar.cshtml")
+        <!-- End of Sidebar -->
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+            <!-- Main Content -->
+            <div id="content">
+                @RenderPage("~/Content/navbar.cshtml")
+                <!-- End of Topbar -->
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <!-- Page Heading -->
+                    <!-- Content Row -->
+                    <div class="col-md-12">
+
+                        <div class="card shadow mb-4">
+                            <input id="ruta_actual1" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual1"]" style="display: none;" />
+                            <input id="webserv" value="@System.Configuration.ConfigurationManager.AppSettings["webservice"]" style="display: none;" />
+                            <input id="ruta_actual" value="@System.Configuration.ConfigurationManager.AppSettings["ruta_actual"]" style="display: none;" />
+                            <h3 class="h3 mb-2 text-gray-600" style="text-align:center">Asignación de Servicio al Proveedor</h3>
+
+
+                            <div class="card-body">
+
+
+                                <div class="table-responsive">
+
+
+                                    <table class="table table-success" id="dataTab11le" name="dataTab11le" width="100%" cellspacing="0" style="display:none">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Id Servicio Asignado
+                                                </th>
+                                                <th>
+                                                    Nombres del Proveedor
+                                                </th>
+                                                <th>
+                                                    Apellidos  del Proveedor
+                                                </th>
+                                                <th>
+                                                    Telefono  del Proveedor
+                                                </th>
+                                                <th>
+                                                    Correo  del Proveedor
+                                                </th>
+                                                <th>
+                                                    Fecha y Hora Estimada de llegada
+                                                </th>
+                                                <th>
+                                                    Fecha y Hora Inicio
+                                                </th>
+                                                <th>
+                                                    Fecha y Hora Fin
+                                                </th>
+                                                <th>
+                                                    Fecha y Hora de Pago
+                                                </th>
+
+                                                <th>
+                                                    Precio Cot. Proveedor
+                                                </th>
+                                                <th>
+                                                    Costo Final
+                                                </th>
+                                                <th>
+                                                    Estado
+                                                </th>
+
+                                                <th>
+                                                    Chat
+                                                </th>
+                                                <th>
+                                                    Recibo
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="tab1">
+                                        </tbody>
+                                    </table>
+
+
+
+
+
+                                    <div class="col-md-12" id="post1" style="display:none">
+                                        <div class="card shadow mb-4">
+                                            <h3 class="h3 mb-2 text-gray-600" style="text-align:center">Post Administrativo</h3>
+
+                                            <div class="card-body">
+                                                <div class="responsive">
+
+
+                                                    <div class="col-md-12">
+                                                        <p>
+                                                            Comentario de Cliente:
+                                                            <form>
+                                                                <input id="datoj" name="datoj" class="form-control" style="" type="text" disabled />
+                                                            </form>
+
+
+                                                        </p>
+
+
+                                                        <p style="display:none">
+                                                            Aprobación de Comentario:
+                                                            <form style="display:none">
+
+                                                                <input type="checkbox" id="myCheck" onchange="checkbox_changed()">
+                                                            </form>
+
+
+
+                                                        </p>
+
+
+                                                        <p>
+                                                            Calificación de Estrellas:<br>
+
+                                                            <form>
+                                                        <p class="clasificacion">
+                                                            <input id="radio1" type="radio" name="estrellas" value="1">
+                                                            <!--
+                                    -->
+                                                            <label for="radio1">★</label>
+                                                            <!--
+                                    -->
+                                                            <input id="radio2" type="radio" name="estrellas" value="2">
+                                                            <!--
+                                    -->
+                                                            <label for="radio2">★</label>
+                                                            <!--
+                                    -->
+                                                            <input id="radio3" type="radio" name="estrellas" value="3">
+                                                            <!--
+                                    -->
+                                                            <label for="radio3">★</label>
+                                                            <!--
+                                    -->
+                                                            <input id="radio4" type="radio" name="estrellas" value="4">
+                                                            <!--
+                                    -->
+                                                            <label for="radio4">★</label>
+                                                            <!--
+                                    -->
+                                                            <input id="radio5" type="radio" name="estrellas" value="5">
+                                                            <!--
+                                    -->
+                                                            <label for="radio5">★</label>
+                                                        </p>
+                                                        </form>
+
+
+                                                        </p>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+
+
+
+
+
+
+
+
+
+
+                                    <div class="col-md-12" id="post2" style="display:none">
+                                        <div class="card shadow mb-4">
+                                            <h3 class="h3 mb-2 text-gray-600" style="text-align:center">Costo del Servicio Asignado al Proveedor</h3>
+                                            <div class="card-body">
+                                                <div class="responsive">
+                                                    <div class="col-md-12">
+
+                                                        <div id="resultado"></div>
+
+
+                                                        <table class="table table-danger" id="tablaReportes11" name="tablaReportes11" width="100%" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Costo del Servicio
+                                                                    </th>
+                                                                    <th>
+                                                                        Insumos 1
+                                                                    </th>
+                                                                    <th>
+                                                                        Comisión servicios
+                                                                    </th>
+                                                                    <th>
+                                                                        Comisión Broker
+                                                                    </th>
+                                                                    <th>
+                                                                        Seguro
+                                                                    </th>
+                                                                    <th>
+                                                                        Inumos 2
+                                                                    </th>
+                                                                    <th>
+                                                                        Costo Final
+                                                                    </th>
+
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody id="tacf">
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+
+                                    <h6 style="display:none" id="info1" class="h6 mb-2 text-gray-400">No ha sido Asigando el Servicio !!! </h6>
+
+
+                                    <div class="col-md-12" id="proveedor" style="display:none">
+                                        <div class="container-fluid">
+
+                                            <!-- DataTales Example -->
+                                            <div class="card shadow mb-4">
+                                                <div class="card-body">
+
+                                                    <div class="table-responsive">
+                                                        <h3 class="h3 mb-2 text-gray-800">Lista de Proveedores</h3>
+
+                                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>
+                                                                        Nombre
+                                                                    </th>
+                                                                    <th>
+                                                                        Apellido
+                                                                    </th>
+                                                                    <th>
+                                                                        Telefono
+                                                                    </th>
+                                                                    <th>
+                                                                        Correo
+                                                                    </th>
+
+                                                                    <th>
+                                                                        Precio
+                                                                    </th>
+                                                                    <th>
+                                                                        Estado
+                                                                    </th>
+
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody id="tabp">
+                                                            </tbody>
+                                                        </table>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+
+                                        <!-- Content Row -->
+                                    </div>
+
+
+                                    <h6 id="info2" style="display:none" class="h6 mb-2 text-gray-400">No hay lista de Proveedores !!!! </h6>
+
+
+
+
+
+
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                </div>
+                <div class="loader"></div>
+                <!-- End of Main Content -->
+                <!-- Footer -->
+                @RenderPage("~/Content/footer.cshtml")
+                <!-- End of Footer -->
+            </div>
+            <!-- End of Content Wrapper -->
+        </div>
+
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Bootstrap core JavaScript-->
+        <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+        <script src="~/Content/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="~/Content/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="~/Content/js/sb-admin-2.min.js"></script>
+        <script src="~/Content/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="~/Content/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="~/Content/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>
+
+
+<script type="text/javascript">
+
+    var  idu = @Session["UserId"];
+    var ws = $("#webserv").val();
+    var ruta_actual = $("#ruta_actual").val();
+    var reqid = '@ViewBag.dt';
+    var ruta_actual1 = $("#ruta_actual1").val();
+
+
+</script>
+
+<script type="text/javascript" src="~/Content/menu1.js"></script>
+
+
+<script>
+
+
+     var checkbox = document.getElementById("myCheck");
+
+    function checkbox_changed() {
+        if (checkbox.checked == true) {
+
+      if (confirm("Esta Seguro de Actualizar la Aprobación de Confirmación ?")) {
+            var dd = $("#idper").val();
+        $.ajax({
+            url: '@Url.Action("EditjuT","RequiereServicios")',
+            dataType: "json",
+            data: { id: dd },
+            success: function (data) {
+                alert(data);
+
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+    }else {
+      document.getElementById("myCheck").checked = false;
+            alert("Buena elección !!!");
+}
+
+
+
+
+    } else {
+
+
+        if (confirm("Esta Seguro de Actualizar la Aprobación de Confirmación ?")) {
+            var dd = $("#idper").val();
+        $.ajax({
+            url: '@Url.Action("EditjuF","RequiereServicios")',
+            dataType: "json",
+            data: { id: dd },
+            success: function (data) {
+                 alert(data);
+
+            },
+            error: function (xhr, status, error) {
+                alert("Error");
+            }
+        });
+    }else {
+             document.getElementById("myCheck").checked = true;
+            alert("Buena elección !!!");
+}
+
+        }
+    }
+
+
+
+
+
+    $(document).ready(function () {
+
+      
+          $(".loader").fadeOut("slow");
+          var comentario;
+          var calificacion;
+          var estad;
+            $.ajax({
+              contentType: 'application/json; charset=utf-8',
+              dataType: "json",
+              type: "get",
+              url: ws + "/api/Lista_datos_ServAsig1?reqid=" + reqid,
+              success: function (data) {
+                  console.log("lista_detalle " + data.valor);
+                  var dat1 = JSON.stringify(data.valor);
+                  var dat2 = JSON.parse(dat1);
+                  var canti = dat2.length;
+                 
+                  if (canti > 0) {
+                   
+                      var cony = '';
+                      $.each(dat2, function (idx, obj) {
+
+                          var tg = obj.StatusServAsigId;
+                          var url = ruta_actual1+"/Conversacion/" + obj.ServAsigId;
+
+                          var mensaje = '<a class="nav-link" target="_blank" href="' + url + '">' +
+                              '<i class="fa fa-comments-o" style="font-size:35px;color:lawngreen"></i>' +
+                              '</a>';
+
+                          if ((tg == 1) || (tg == 2)) {
+
+                              var da1 = obj.ServAsigFHInicio;
+                              if (da1 == "") {
+                                  da1 = "Sin Fecha";
+                              }
+
+                              var da2 = obj.ServAsigFHFin;
+                              if (da2 == "") {
+                                  da2 = "Sin Fecha";
+                              }
+                              var da3 = obj.ServAsigFHPago;
+                              if (da3 == "") {
+                                  da3 = "Sin Fecha";
+                              }
+
+                              var fila = "<tr> <td>" + obj.ServAsigId + "</td>  <td>" + obj.PersonaNombres + "</td> <td>" + obj.PersonaApellidos + "</td> <td>" + obj.PersonaTelefono + "</td> <td>" + obj.PersonaCorreo + "</td> <td>" + obj.ServAsigFHEstimadaLlegada + "</td>  <td>" + da1 + "</td> <td>" + da2 + "</td>  <td>" + da3 + "</td>  <td>" + "0.00 BOB" + "</td> <td>" + obj.ServAsigCostoTotal + ".00 BOB </td> <td>" + obj.StatusServAsigNombre + "</td> <td>" + mensaje + "</td> <td>" + "No disponible" + "</td>  </tr>";
+                              var btn = document.createElement("TR");
+                              btn.innerHTML = fila;
+                              cony += fila;
+                          }
+
+                      });
+
+
+                  
+
+
+
+                      if (cony == '') {
+
+
+                          var detalle = '<button type="button" onclick="detalle();" class="btn btn-link">' +
+                              '<i class="fa fa-folder-o" style="font-size:35px;color:lawngreen"></i>' +
+                              '</button>';
+                          $.ajax({
+                              contentType: 'application/json; charset=utf-8',
+                              dataType: "json",
+                              type: "get",
+                              url: ws + "/api/Lista_datos_ServAsig2?reqid=" + reqid,
+                              success: function (data) {
+
+                                  console.log("lista_detalle " + data.valor);
+
+                                  alert(data.valor);
+                                  var fg6;
+                                  var dat11 = JSON.stringify(data.valor);
+                                  var dat21 = JSON.parse(dat11);
+                                  var serg;
+                                  $.each(dat21, function (idx, obj) {
+
+
+
+                                      var url = ruta_actual1 + "/Conversacion/" + obj.ServAsigId;
+
+                                      var mensaje = '<a class="nav-link" target="_blank" href="' + url + '">' +
+                                          '<i class="fa fa-comments-o" style="font-size:35px;color:lawngreen"></i>' +
+                                          '</a>';
+
+
+                                      comentario = obj.PostComentario;
+                                      calificacion = obj.PostCalificacion;
+                                      estad = obj.PostComentarioAprobacion;
+                                      serg = obj.ServAsigId;
+                                      fg6 = obj.ServAsigCostoTotal;
+                                      var fila = "<tr> <td>" + obj.ServAsigId + "</td>  <td>" + obj.PersonaNombres + "</td> <td>" + obj.PersonaApellidos + "</td> <td>" + obj.PersonaTelefono + "</td> <td>" + obj.PersonaCorreo + "</td> <td>" + obj.ServAsigFHEstimadaLlegada + "</td>  <td>" + obj.ServAsigFHInicio + "</td> <td>" + obj.ServAsigFHFin + "</td>  <td>" + obj.ServAsigFHPago + "</td>  <td>" + obj.ServAsigCostoValor + " BOB </td> <td>" + obj.ServAsigCostoTotal + " BOB </td> <td>" + obj.StatusServAsigNombre + "</td> <td>" + mensaje + "</td> <td>" + detalle + "</td>  </tr>";
+                                      var btn = document.createElement("TR");
+                                      btn.innerHTML = fila;
+                                      cony += fila;
+
+                                  });
+
+
+                                  document.getElementById('tab1').innerHTML = cony;
+                                  $("#dataTab11le").show();
+
+
+                                  $("#datoj").val(comentario);
+                                  var countInt = parseInt(calificacion);
+                                  var df = 6 - countInt;
+                                  jQuery("#radio" + df).attr('checked', true);
+
+
+                                  $("#post1").show();
+
+
+
+                                  $.ajax({
+                                      contentType: 'application/json; charset=utf-8',
+                                      dataType: "json",
+                                      type: "get",
+                                      url: ws + "/api/Lista_ServAsigCosto_x_ServAsig?servasigid=" + serg,
+                                      success: function (data) {
+
+                                          console.log("lista_detalle " + data.valor);
+
+                                          var dat111 = JSON.stringify(data.valor);
+                                          var dat211 = JSON.parse(dat111);
+
+                                          var fg0 =0;
+                                          var fg1=0;
+                                          var fg2=0;
+                                          var fg3=0;
+                                          var fg4=0;
+                                          var fg5=0;
+
+
+
+                                          $.each(dat211, function (idx, obj) {
+
+
+
+                                              if (idx == 0) {
+                                                  fg0 = obj.ServAsigCostoValor;
+                                              } else {
+                                                  if (idx == 1) {
+                                                      fg1 = obj.ServAsigCostoValor;
+                                                  } else {
+                                                      if (idx == 2) {
+                                                          fg2 = obj.ServAsigCostoValor;
+                                                      } else {
+
+                                                          if (idx == 3) {
+                                                              fg3 = obj.ServAsigCostoValor;
+                                                          } else {
+
+                                                              if (idx == 4) {
+                                                                  fg4 = obj.ServAsigCostoValor;
+                                                              } else {
+                                                                  if (idx == 5) {
+                                                                      fg5 = obj.ServAsigCostoValor;
+                                                                  }
+                                                              }
+                                                          }
+                                                      }
+                                                  }
+                                              }
+
+
+
+                                          });
+
+                                          var fila1 = "<tr> <td>" + fg0 + " BOB</td>  <td>" + fg1 + " BOB</td> <td>" + fg2 + " BOB</td> <td>" + fg3 + " BOB</td> <td>" + fg4 + " BOB</td> <td>" + fg5 + " BOB</td>  <td>" + fg6 + " BOB</td>   </tr>";
+                                          var btn = document.createElement("TR");
+                                          btn.innerHTML = fila1;
+
+                                          document.getElementById('tacf').innerHTML = fila1;
+                                          $("#post2").show();
+
+
+
+                                      },
+                                      error: function (xhr, status, error) {
+                                          alert("no");
+                                      }
+
+                                  });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              },
+                              error: function (xhr, status, error) {
+                                  alert("no");
+                              }
+
+                          });
+
+
+                      } else {
+
+                          document.getElementById('tab1').innerHTML = cony;
+                          $("#dataTab11le").show();
+
+                      }
+
+                  } else {
+
+                      $("#info1").show();
+
+                  }
+
+
+
+
+
+
+
+              },
+              error: function (xhr, status, error) {
+                  alert("no");
+              }
+
+          });
+
+
+
+
+          $.ajax({
+              contentType: 'application/json; charset=utf-8',
+              dataType: "json",
+              type: "get",
+              url: ws + "/api/Lista_Proveedores_X_req?reqid=" + reqid,
+              success: function (data) {
+                  var dat1 = JSON.stringify(data.valor);
+                  var dat2 = JSON.parse(dat1);
+                  var cony1 = '';
+
+                  if (dat2.length > 0) {
+                      $.each(dat2, function (idx, obj) {
+                          var fila = "<tr> <td>" + obj.PersonaNombres + "</td>  <td>" + obj.PersonaApellidos + "</td> <td>" + obj.PersonaTelefono + "</td> <td>" + obj.PersonaCorreo + "</td> <td>" + obj.RequiereServicioProvCotizacion + "</td> <td>" + obj.StatusRequiereNombre + "</td>  </tr>";
+                          var btn = document.createElement("TR");
+                          btn.innerHTML = fila;
+                          cony1 += fila;
+                      });
+
+                      $('#dataTable').dataTable().fnDestroy();
+
+                      document.getElementById('tabp').innerHTML = cony1;
+
+                      $('#dataTable').DataTable({
+
+                      });
+
+                      $("#proveedor").show();
+                  } else {
+
+                      $("#info2").show();
+
+                  }
+
+
+              },
+              error: function (xhr, status, error) {
+                  alert("no");
+              }
+
+          });
+
+      });
+
+    function detalle() {
+
+        var datoo = reqid;
+        window.open('http://177.222.33.6/bantic_portal/ServiceWeb/ReciboSW.aspx?Id=' + datoo, '_blank');
+    }
+
+
+
+
+
+
+</script>
+
+

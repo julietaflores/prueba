@@ -1,0 +1,36 @@
+<!doctype html>
+<html >
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>alertify</title>
+    <meta name="author" content="">
+	
+    <link rel="stylesheet" href="../css/alertify.css">
+
+    <link rel="stylesheet" href="../css/themes/semantic.css">
+
+	
+</head>
+<body>
+
+
+	<script src="https://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="../alertify.min.js"></script>
+	<script>
+	
+	  $(document).ready(function () {
+	  alertify.confirm('Confirm Title', 'Confirm Message', 
+	      function(){ alertify.success('Ok') }
+        , function(){ alertify.error('Cancel')}
+		);
+	  
+	
+
+	  });
+
+		
+	</script>
+
+</body>
+</html>
